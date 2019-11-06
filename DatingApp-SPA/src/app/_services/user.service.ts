@@ -88,6 +88,6 @@ export class UserService {
           }
           return paginatedResult;
         })
-      )
+      );
   }
 }

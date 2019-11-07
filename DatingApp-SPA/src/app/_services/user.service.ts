@@ -39,13 +39,14 @@ export class UserService {
       params = params.append('likees', 'true');
     }
 
-    return this.http.get<User[]>(this.baseUrl + 'users', { observe: 'response', params }).pipe(map(response => {
-      paginatedResult.result = response.body;
-      if (response.headers.get('Pagination') != null) {
-        paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
-      }
-      return paginatedResult;
-    }));
+    return this.http.get<User[]>(this.baseUrl + 'users', { observe: 'response', params })
+      .pipe(map(response => {
+        paginatedResult.result = response.body;
+        if (response.headers.get('Pagination') != null) {
+          paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+        }
+        return paginatedResult;
+      }));
   }
 
   getUser(id): Observable<User> {
@@ -84,7 +85,7 @@ export class UserService {
         map(response => {
           paginatedResult.result = response.body;
           if (response.headers.get('Pagination') !== null) {
-            paginatedResult.pagination = JSON.parse(response.headers.get('pagination'));
+            paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
           }
           return paginatedResult;
         })
@@ -97,5 +98,9 @@ export class UserService {
 
   sendMessage(id: number, message: Message) {
     return this.http.post(this.baseUrl + 'users/' + id + '/messages', message);
+  }
+
+  deleteMessage(id: number, userId: number) {
+    return this.http.post(this.baseUrl + 'users/' + userId + '/messages/' + id, {});
   }
 }
